@@ -60,6 +60,97 @@ def check_rates():
         "estimate": estimate
     })
 
+@app.route('/invoice', methods=['POST'])
+def invoice():
+    data = request.get_json()
+    order_id = data.get("order_id")
+
+    if not order_id:
+        return jsonify({"error": "order_id is required"}), 400
+
+    if order_id == "ORD123":
+        return jsonify({
+            "order_id": "ORD123",
+            "status": "Available",
+            "invoice_link": "https://example.com/invoice/ORD123.pdf"
+        })
+    elif order_id == "ORD999":
+        return jsonify({
+            "order_id": "ORD999",
+            "status": "Processing"
+        })
+    else:
+        return jsonify({
+            "order_id": order_id,
+            "status": "Not Found"
+        })
+
+@app.route('/refundstatus', methods=['POST'])
+def refund_status():
+    data = request.get_json()
+
+    order_id = data.get("order_id")
+
+    if not order_id:
+        return jsonify({"error": "order_id is required"}), 400
+
+    # ----- Sample Refund Logic -----
+    if order_id == "ORD123":
+        return jsonify({
+            "order_id": order_id,
+            "status": "Refund Initiated",
+            "amount": "₹500"
+        })
+    elif order_id == "ORD555":
+        return jsonify({
+            "order_id": order_id,
+            "status": "Refund Completed",
+            "amount": "₹750"
+        })
+    else:
+        return jsonify({
+            "order_id": order_id,
+            "status": "Not Found",
+            "amount": ""
+        })
+    
+@app.route('/trackshipment', methods=['POST'])
+def track_shipment():
+    data = request.get_json()
+    tracking_id = data.get("tracking_id")
+
+    # Validate
+    if not tracking_id:
+        return jsonify({"error": "tracking_id is required"}), 400
+
+    # ---- Example Shipment Data ----
+    if tracking_id == "TRK123":
+        return jsonify({
+            "tracking_id": tracking_id,
+            "status": "In Transit",
+            "current_location": "Chennai",
+            "expected_delivery": "2025-11-28"
+        })
+
+    elif tracking_id == "TRK777":
+        return jsonify({
+            "tracking_id": tracking_id,
+            "status": "Delivered",
+            "delivered_on": "2025-11-20"
+        })
+
+    elif tracking_id == "TRK999":
+        return jsonify({
+            "tracking_id": tracking_id,
+            "status": "Pending Pickup"
+        })
+
+    else:
+        return jsonify({
+            "tracking_id": tracking_id,
+            "status": "Not Found"
+        })
+    
 @app.route('/')
 def home():
     return "Flask API running..."
