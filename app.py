@@ -2,6 +2,23 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+@app.route('/paymentstatus', methods=['POST'])
+def payment_status():
+    data = request.get_json()
+    payment_id = data.get("payment_id")
+
+    if not payment_id:
+        return jsonify({"error": "payment_id required"}), 400
+
+    # Dummy example logic
+    if payment_id == "PAY123":
+        return jsonify({"status": "Success", "amount": "₹500"})
+    elif payment_id == "PAY999":
+        return jsonify({"status": "Failed"})
+    else:
+        return jsonify({"status": "Not Found"})
+
+
 @app.route('/checkrates', methods=['POST'])
 def check_rates():
     data = request.get_json()
