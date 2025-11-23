@@ -10,14 +10,24 @@ def payment_status():
     if not payment_id:
         return jsonify({"error": "payment_id required"}), 400
 
-    # Dummy example logic
     if payment_id == "PAY123":
-        return jsonify({"status": "Success", "amount": "₹500"})
+        return jsonify({
+            "payment_id": payment_id,
+            "status": "Success",
+            "amount": "₹500"
+        })
     elif payment_id == "PAY999":
-        return jsonify({"status": "Failed"})
+        return jsonify({
+            "payment_id": payment_id,
+            "status": "Failed",
+            "amount": ""
+        })
     else:
-        return jsonify({"status": "Not Found"})
-
+        return jsonify({
+            "payment_id": payment_id,
+            "status": "Not Found",
+            "amount": ""
+        })
 
 @app.route('/checkrates', methods=['POST'])
 def check_rates():
